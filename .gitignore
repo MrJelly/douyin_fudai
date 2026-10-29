@@ -1,0 +1,42 @@
+# Gradle & Android build outputs
+.gradle/
+.gradle-user/
+**/build/
+**/.cxx/
+local.properties
+
+# IDE & OS files
+.idea/
+*.iml
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Compiled binaries & packages
+*.apk
+*.aab
+*.ap_
+*.dex
+*.class
+
+# Logs, PIDs & runtime dumps
+*.log
+*.pid
+/*.png
+/*.xml
+/*.json
+
+# Optional local toolchains & environments
+toolchain/
+.venv/
+.runtime/
+__pycache__/
+*.pyc
+
+# Private signing material
+signing/
+*.jks
+*.keystore
+*.p12
+.env
+.env.*

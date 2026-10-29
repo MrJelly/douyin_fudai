@@ -1,0 +1,59 @@
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+}
+
+android {
+    namespace 'com.jelly.fudai'
+    compileSdk 33
+
+    defaultConfig {
+        applicationId 'com.jelly.fudai'
+        minSdk 30
+        targetSdk 33
+        versionCode = (System.getenv('RELEASE_VERSION_CODE') ?: '1').toInteger()
+        versionName = (System.getenv('RELEASE_VERSION_NAME') ?: '0.0.1')
+        ndk {
+            abiFilters 'arm64-v8a'
+        }
+    }
+
+    def signingPath = System.getenv('ANDROID_KEYSTORE_PATH')
+    signingConfigs {
+        release {
+            if (signingPath) {
+                storeFile file(signingPath)
+                storeType 'PKCS12'
+                storePassword System.getenv('ANDROID_KEYSTORE_PASSWORD')
+                keyAlias System.getenv('ANDROID_KEY_ALIAS')
+                keyPassword System.getenv('ANDROID_KEY_PASSWORD')
+            }
+        }
+    }
+    buildTypes {
+        debug {
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+        release {
+            if (signingPath) signingConfig signingConfigs.release
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
+    }
+    kotlinOptions { jvmTarget = '11' }
+}
+
+dependencies {
+    // Bundled Chinese model: works offline and does not require Google Play services.
+    implementation 'com.google.mlkit:text-recognition-chinese:16.0.1'
+    // Official OpenCV Android AAR from Maven Central.
+    implementation 'org.opencv:opencv:4.10.0'
+}
